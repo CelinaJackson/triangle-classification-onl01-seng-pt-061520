@@ -1,33 +1,54 @@
+require 'pry'
 class Triangle
-  attr_reader :a, :b, :c
-  def initialize(a, b, c)
-    @a = a
-    @b = b
-    @c = c
+  # write code here
+end
+
+  attr_accessor :side1, :side2, :side3
+  @sides = []
+
+  def initialize(side1, side2, side3)
+    @side1, @side2, @side3 = side1, side2, side3
+    @sides = [side1, side2, side3]
   end
 
   def kind
-    validate_triangle #runs this method
-    #returns what kind of triangle it is
-    if a == b && b == c
+    if(negative? == true || valid? == false)
+      raise TriangleError
+    elsif(equilateral?)
       :equilateral
-    elsif a == b || b == c || a == c
-      :isosceles
-    else
+    elsif(scalene?)
       :scalene
+    elsif(isosceles?)
+      :isosceles
     end
   end
 
-  def validate_triangle
-    #creates an array of boolean values basedon the input values of a,b,c ; so that if any of those return false, the method will return false, if the array has a false value in it, then the raise Triangle Error runs
-    #otherwise this returns true
-    real_triangle = [(a + b > c), (a + c > b), (b + c > a)]
-    #below tests to see if a,b or c is zero or negative
-    #if any of them are zero or negative, then it adds a false value to the array, so that the Triangle Error will be raised
-    [a, b, c].each { |s| real_triangle << false if s <= 0 }
-    raise TriangleError if real_triangle.include?(false)
+  def negative?
+    @sides.each do |length|
+      if(length <= 0)
+        return true
+      end
+    end
   end
+
+  def equilateral?
+    (@side1 == @side2) && (@side1 == @side3)
+  end
+
+  def scalene?
+    (@side1 != @side2) && (@side1!= @side3) && (@side2 != @side3)
+  end
+
+  def isosceles?
+    (@side2 == @side3) || (@side1 == @side2) || (@side1 = @side3)
+  end
+
+  def valid?
+    (@side1 + @side2 > @side3) && (@side2 + @side3 > @side1) && (@side1 + @side3 > @side2)
+  end
+
 end
 
 class TriangleError < StandardError
+
 end
