@@ -52,3 +52,4 @@ end
 class TriangleError < StandardError
 
 end
+end
